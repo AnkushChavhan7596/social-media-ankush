@@ -21,8 +21,8 @@ const Home = () =>{
         axios.get("http://localhost:8000/all-posts").then((res)=>{
             
             if(res.status === 200){
-
-                setPosts(res.data.reverse())
+                console.log(res.data);
+                setPosts(res.data);
 
             }
             else{

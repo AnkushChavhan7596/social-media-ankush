@@ -12,12 +12,33 @@ const jwt = require("jsonwebtoken")
 //////////////////////////// database ///////////////////////////
 require("./src/db/database");
 
+// /////////////////////////////////////////
+//////// deployment
+
+__dirname = path.resolve()
+
+if(process.env.NODE_ENV === "production"){
+    console.log(__dirname)
+    app.use(express.static(path.join(__dirname, "..", "/Client/build")));
+
+    app.get("*", (req, res)=>{
+        res.sendFile(path.resolve(__dirname,"..", "Client", "build", "index.html"));
+    })
+
+
+}else{
+    app.get("/", (req, res)=>{
+        res.send("API is running");
+    })
+}
+
 
 
 /////////////////////////// models //////////////////////////////
 const userModel = require("./src/models/userModel");
 const postModel = require("./src/models/postModel");
 const commentModel = require("./src/models/commentModel");
+const e = require("express");
 
 /////////////////////////// middlewares /////////////////////////
 const image_destination = path.join(__dirname, "./Frontend/social_media/public");

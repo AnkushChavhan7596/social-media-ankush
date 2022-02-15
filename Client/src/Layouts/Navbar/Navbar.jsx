@@ -56,6 +56,7 @@ const Navbar = () =>{
     ////////////////// load active user
     const loadActiveUser = async () =>{
         if(Cookies.get("jwt")){
+            console.log(Cookies.get("jwt"))
             try{
                 const res = await axios.post("http://localhost:8000/get_active_user_by_token", {token: Cookies.get("jwt")});
     
