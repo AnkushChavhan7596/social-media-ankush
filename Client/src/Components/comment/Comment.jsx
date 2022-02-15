@@ -69,7 +69,6 @@ const Comment = ({ comment, postID, commentsCount }) => {
             const res = await axios.post("http://localhost:8000/get_active_user_by_token", { token: Cookies.get("jwt") });
 
             if (res.status === 200) {
-                console.log(res.data.activeUser)
                 setActiveUser(res.data.activeUser);
             }
 

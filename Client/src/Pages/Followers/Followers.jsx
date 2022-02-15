@@ -6,20 +6,23 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 
-const Followers = () => {
+const Followers = ({currentActiveUser}) => {
 
     const [followersBlock, setFollowersBlock] = useState("block");
     const [followingsBlock, setFollowingsBlock] = useState("hide");
-    const [currentActiveUser, setCurrentActiveUser] = useState({});
     const [user, setUser] = useState({});
     const [followerUsers, setFollowerUsers] = useState([]);
     const [followingUsers, setFollowingUsers] = useState([]);
+    const [activeFollowerBlock, setActiveFollowerBlock] = useState("")
+    const [activeFollowingBlock, setActiveFollowingBlock] = useState("")
 
     ///////////////////////////////////
     ////// handle followers block
     const handleFollowersBlock = () => {
             setFollowersBlock("block");
             setFollowingsBlock("hide");
+            setActiveFollowerBlock("activeBlock")
+            setActiveFollowingBlock("inActiveBlock");
     }
 
 
@@ -28,33 +31,12 @@ const Followers = () => {
     const handleFollowingsBlock = () => {
             setFollowingsBlock("block");
             setFollowersBlock("hide");
+            setActiveFollowerBlock("inActiveBlock")
+            setActiveFollowingBlock("activeBlock");
     }
 
 
-    ///////////////////////////////
-    //////////// load active user
-
-    const loadActiveUser = async () => {
-        try {
-            const res = await axios.post("http://localhost:8000/get_active_user_by_token", { token: Cookies.get("jwt") });
-
-            if (res.status === 200) {
-                setCurrentActiveUser(res.data.activeUser);
-            }
-            else {
-                console.log(res.data.msg)
-            }
-
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-
-
-
-
-
-    ///////////////////////////////////////////////////////
+     ///////////////////////////////////////////////////////
     ////////////////////// get user by id
     // const getUserById = async (id) =>{
     //     try{
@@ -76,7 +58,6 @@ const Followers = () => {
     /////////////// get all followers user
     const getAllFollowersUsers = async () =>{
             currentActiveUser.followers.map(async (followerID) =>{
-
                     try{
                         const res = await axios.post(`http://localhost:8000/get_user_by_id/${followerID}`);
                         if(res.status === 200){
@@ -90,6 +71,7 @@ const Followers = () => {
                     }
             })
     }
+
 
     /////////////////////////////////////////////////////////
     /////////////// get all followings user
@@ -112,10 +94,6 @@ const Followers = () => {
     }
 
 
-    
-    useEffect(() => {
-        loadActiveUser();
-    },[])
 
     useEffect(()=>{
             getAllFollowersUsers();
@@ -134,11 +112,11 @@ const Followers = () => {
                 <div className="followers___wrapper">
                     <div className="foll_wrapper_header">
                         <div className="left">
-                            <button onClick={handleFollowersBlock}>Followers</button>
+                            <button className={`${activeFollowerBlock}`} onClick={handleFollowersBlock}>Followers</button>
                         </div>
 
                         <div className="right">
-                            <button onClick={handleFollowingsBlock}>Followings</button>
+                            <button className={`${activeFollowingBlock}`} onClick={handleFollowingsBlock}>Followings</button>
                         </div>
                     </div>
 

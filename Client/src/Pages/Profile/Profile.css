@@ -321,6 +321,12 @@ button:hover{
       color: white;
   }
 
+  .no_posts{
+      margin-top: 50px;
+      font-size: 25px;
+      color: rgb(110, 110, 110);
+      font-weight: 500;
+  }
 
 
   @media screen and (max-width: 500px){
@@ -371,6 +377,10 @@ button:hover{
         height: 150px;
         margin: 0 10px;
         margin-bottom: 15px;
+    }
+
+    .no_posts{
+        font-size: 22px;
     }
 
   } 
@@ -427,6 +437,10 @@ button:hover{
         font-weight: 500;
         color: gray;
         font-size: 15px;
+    }
+
+    .no_posts{
+        font-size: 20px;
     }
     
 }

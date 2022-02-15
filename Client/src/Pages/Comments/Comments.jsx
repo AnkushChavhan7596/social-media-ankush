@@ -6,11 +6,11 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Comment from "../../Components/comment/Comment";
+import Loader from "../Loader/Loader";
 
 
 const Comments = () => {
     const { id } = useParams();
-    console.log(id);
 
 
     const [commentPost, setCommentPost] = useState({});
@@ -22,15 +22,12 @@ const Comments = () => {
 
     useEffect(() => {
         // loadCommentPost();
-        console.log(id)
         axios.post(`http://localhost:8000/get_post_by_id`, { id: id }).then((res) => {
 
             if (res.status === 200) {
-                console.log(res.data.user);
                 setCommentPost(res.data.post);
                 setPostUser(res.data.user);
                 setLikeCount(res.data.post.likes.length);
-                console.log(res.data);
             }
             else {
                 console.log("Post not found");
@@ -44,7 +41,6 @@ const Comments = () => {
         ///////////// handle post like
         const handleLike = async (authorID, postID) =>{
             try{
-                console.log(authorID)
                 const id = authorID;
                 const res = await axios.post(`http://localhost:8000/post-like/${id}`, {postID : postID});
 
@@ -73,7 +69,6 @@ const Comments = () => {
             const res = await axios.get("http://localhost:8000/comments/get");
 
             if (res.status === 200) {
-                console.log(res.data);
                 setComments(res.data.reverse());
             }
             else {
@@ -122,8 +117,6 @@ const Comments = () => {
         const res = await axios.post("http://localhost:8000/get_active_user_by_token", { token: Cookies.get("jwt") });
 
         if (res.status === 200) {
-            console.log("Hello world")
-            console.log(res.data.activeUser)
             setCurrentActiveUser(res.data.activeUser);
         }
         else {
@@ -155,7 +148,7 @@ const Comments = () => {
                            
                            comments.filter((comment) => comment.postID === id).map((comment) => {
                                 return (
-                                    <Comment comment={comment} postID={id} />
+                                    <Comment comment={comment} postID={id} key={comment._id} />
                                 )
                             })
                         }
@@ -255,7 +248,7 @@ const Comments = () => {
                             </Link>
 
                             <div className="post_body">
-                                <img src={`${process.env.REACT_APP_IMAGE_PATH}${commentPost.postImage}`} alt="profile" />
+                                <img src={commentPost.postImage ? `${process.env.REACT_APP_IMAGE_PATH}${commentPost.postImage}` : `${process.env.REACT_APP_IMAGE_PATH}user (1).png`} alt="profile" />
                             </div>
 
                             <div className="post_footer">

@@ -16,17 +16,17 @@ const FriendsPost = ({posts}) =>{
         <>
            <div className="friends_posts">
                             <Swiper
-                                    spaceBetween={15}
+                                    spaceBetween={10}
                                     slidesPerView={5}
-                                    onSlideChange={() => console.log('slide change')}
-                                    onSwiper={(swiper) => console.log(swiper)}
+                                    // onSlideChange={() => console.log('slide change')}
+                                    // onSwiper={(swiper) => console.log(swiper)}  
                                      className='swiper'
                                     >
 
                                    {
                                       posts.map((post)=>{
                                          return(
-                                             <SwiperSlide className='slide'>
+                                             <SwiperSlide className='slide' key={post._id}>
                                                  <Link to={`/comments/${post._id}`}>
                                                      <img src={`${process.env.REACT_APP_IMAGE_PATH}${post.postImage}`} alt="img" />
                                                   </Link>

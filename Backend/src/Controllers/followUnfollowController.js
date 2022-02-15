@@ -26,7 +26,7 @@ module.exports.follow_unfollow = async (req, res) => {
               console.log("user followed")
               await userModel.updateOne({ _id: userToFollowUnfollow._id }, { $push: { followers: currentUser._id } });
               await userModel.updateOne({ _id: currentUser._id }, { $push: { followings: userToFollowUnfollow._id } });
-              res.status(200).json({ msg: "User followed Successfully", followedYourSelf: false });
+              res.status(200).json({ msg: "User followed Successfully", followedYourSelf: false, follow : true, unfollow: false });
 
             }
             else { // unfollow
@@ -34,7 +34,7 @@ module.exports.follow_unfollow = async (req, res) => {
 
               await userModel.updateOne({ _id: userToFollowUnfollow._id }, { $pull: { followers: currentUser._id } });
               await userModel.updateOne({ _id: currentUser._id }, { $pull: { followings: userToFollowUnfollow._id } });
-              res.status(200).json({ msg: "User unFollowed Successfully", followedYourSelf: false });
+              res.status(200).json({ msg: "User unFollowed Successfully", followedYourSelf: false, follow : false, unfollow : true });
             }
 
           }

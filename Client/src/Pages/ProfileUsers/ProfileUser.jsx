@@ -87,6 +87,33 @@ const ProfileUser = () =>{
     }
 
 
+       ////////////////////////////////////////
+    ///////////// handle follow unfollow
+    const handleFollowUnfollow = async (userID) =>{
+        try{
+            const res = await axios.post(`http://localhost:8000/follow-unfollow`, { id : userID, token : Cookies.get("jwt")});
+
+            if(res.status === 200){
+                console.log(res.data.msg);
+            }
+            else{
+                if(res.data.followedYourSelf){
+                    console.log("You can't follow yourself")
+                    Swal.fire(
+                        "Oops",
+                        res.data.msg,
+                        "info"
+                    )
+                }
+                console.log(res.data.message);
+            }
+
+        }catch(error){
+            console.log(error.message);
+        }
+
+    }
+
 
     useEffect(()=>{
         loadPosts();
@@ -147,6 +174,10 @@ const ProfileUser = () =>{
                                                             <p className='foll'>{followingsCount}</p>
                                                         </div>
                                                 </Link>
+                                            </div>
+
+                                            <div className="profile_user_foll_unfoll">
+                                                <button className='profile_user_foll_unfoll_button' onClick={() =>{handleFollowUnfollow(activeUser._id)} }>{clickedUser.followers.includes(activeUser._id) ? "Unfollow" : "Follow"}</button>
                                             </div>
 
                                       </div>

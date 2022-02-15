@@ -19,6 +19,15 @@
     overflow: hidden;
 }
 
+.activeBlock{
+  color:white;
+  background-color: rgb(13, 197, 96);
+}
+.inActiveBlock{
+    color:rgb(80, 80, 80);
+    background-color: transparent;
+}
+
 .followers__main .foll_wrapper_header{
     height: 40px;
     width: 100%;

@@ -10,6 +10,21 @@
     background-color: rgba(0, 0, 0, 0.002);
 }
 
+.profile_user_foll_unfoll_button{
+    padding: 2px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    background-color: #00D193;
+    cursor: pointer;
+    box-shadow: 1px 1px 5px .1px rgba(0,0,0,0.1);
+}
+
+
 .overlay{
     position: absolute;
     top:0;

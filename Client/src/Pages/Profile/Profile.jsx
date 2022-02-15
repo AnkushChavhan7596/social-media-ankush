@@ -95,7 +95,6 @@ const Profile = () =>{
             if(res.status === 200){
                 // setPosts(res.data.reverse())
                 setPosts(res.data.reverse());
-                console.log(res.data);
 
             //   setPosts(res.data.filter( post => post.authorID === activeUser._id))
 
@@ -278,7 +277,7 @@ const Profile = () =>{
 
                               {
                                   posts.filter( post => post.authorID === activeUser._id ).length == 0 ?
-                                  <h3>No Posts Yet 😞</h3>
+                                  <h3 className='no_posts'>No Posts Yet 😞</h3>
                                   :
                                   posts.filter( post => post.authorID === activeUser._id ).map((post)=> {
                                       return(

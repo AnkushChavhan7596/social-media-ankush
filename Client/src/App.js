@@ -16,12 +16,43 @@ import Comments from './Pages/Comments/Comments';
 import ProfileUser from "./Pages/ProfileUsers/ProfileUser";
 import env from "react-dotenv";
 import Cookies from 'js-cookie';
+import React, {useState, useEffect} from "react";
+import axios from 'axios';
 
 // require("dotenv").config();
 // require('dotenv-webpack');
 
 
+
+
 function App() {
+
+    const [currentActiveUser, setCurrentActiveUser] = useState({});
+
+        ///////////////////////////////
+    //////////// load active user
+
+    const loadActiveUser = async () => {
+        try {
+            const res = await axios.post("http://localhost:8000/get_active_user_by_token", { token: Cookies.get("jwt") });
+
+            if (res.status === 200) {
+                setCurrentActiveUser(res.data.activeUser);
+            }
+            else {
+                console.log(res.data.msg)
+            }
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(()=>{
+        if(Cookies.get("jwt")){
+            loadActiveUser();
+        }
+   },[])
 
     return (
         <div className="App">
@@ -29,20 +60,6 @@ function App() {
                 <Navbar />
 
                 <Routes>
-
-                    {/* {
-                        Cookies.get("jwt") ?
-
-                            <Route path="/" element={<PrivateRoute />}>
-                                <Route path="/" element={<Home />} />
-                            </Route>
-
-                            :
-
-                           <Route path="/login" element={<Login />} />
-                            
-                     } */}
-
 
                     <Route path="/" element={<PrivateRoute />}>
                         <Route path="/" element={<Home />} />
@@ -65,7 +82,7 @@ function App() {
                     </Route>
 
                     <Route path="/followers" element={<PrivateRoute />}>
-                        <Route path="/followers" element={<Followers />} />
+                        <Route path="/followers" element={<Followers currentActiveUser={currentActiveUser} />} />
                     </Route>
 
                     <Route path="/comments/:id" element={<PrivateRoute />}>

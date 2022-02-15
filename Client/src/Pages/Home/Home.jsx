@@ -21,8 +21,8 @@ const Home = () =>{
         axios.get("http://localhost:8000/all-posts").then((res)=>{
             
             if(res.status === 200){
-                console.log(res.data);
-                setPosts(res.data);
+
+                setPosts(res.data.reverse())
 
             }
             else{
@@ -48,7 +48,6 @@ const Home = () =>{
 
             if(res.status === 200){
                 setUsers(res.data);
-                console.log(res.data);
             }
 
         }catch(error){
@@ -61,7 +60,6 @@ const Home = () =>{
        const loadCurrentActiveUser = async () =>{
         const res = await axios.post("http://localhost:8000/get_active_user_by_token", {token : Cookies.get("jwt")});
         if(res.status === 200){
-            console.log(res.data.activeUser)
             setCurrentActiveUser(res.data.activeUser);
         }
         else{
@@ -116,7 +114,7 @@ const Home = () =>{
 
                     <div className="friend_suggestion">
                         {
-                            users.slice(0,9).map((user)=>{
+                            users.filter(user => user._id !== currentActiveUser._id).slice(0,9).map((user)=>{
                                 return(
                                     <SuggestionItem user={user} key={user._id}/>
                                 )

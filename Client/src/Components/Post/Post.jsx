@@ -13,6 +13,8 @@ const Post = ({ postData, currentActiveUser }) =>{
         const [postUser, setPostUser] = useState({});
         const [comments, setComments] = useState([]);
         const [likeStyle, setLikeStyle] = useState("far fa-heart")
+        const [alredyLiked, setAlreadyLiked] = useState("fa-solid fa-heart red");
+        const [nonLiked, setNonLiked] = useState("far fa-heart");
 
   
         // load active user
@@ -38,7 +40,6 @@ const Post = ({ postData, currentActiveUser }) =>{
                 const res = await axios.get("http://localhost:8000/comments/get");
 
                 if(res.status === 200){
-                    console.log(res.data);
                     setComments(res.data);
                 }
                 else{
@@ -57,8 +58,6 @@ const Post = ({ postData, currentActiveUser }) =>{
 
         useEffect(()=>{
             loadActivePostUser();
-            console.log(postData);
-
         },[]);
 
 
@@ -67,7 +66,6 @@ const Post = ({ postData, currentActiveUser }) =>{
         ///////////// handle post like
         const handleLike = async (authorID, postID) =>{
             try{
-                console.log(authorID)
                 const id = authorID;
                 const res = await axios.post(`http://localhost:8000/post-like/${id}`, {postID : postID});
 
@@ -75,12 +73,22 @@ const Post = ({ postData, currentActiveUser }) =>{
                   console.log(res.data.msg);
                   setLikeCount(res.data.liked ? likeCount + 1 : likeCount - 1);
 
-                  if(res.data.liked){
-                      setLikeStyle("fa-solid fa-heart red")
-                  }
-                  else{
-                    setLikeStyle("far fa-heart")
-                  }
+                //   if(res.data.liked){
+                //       nonLiked("far fa-heart");
+                //       alredyLiked("fa-solid fa-heart red");
+
+                //   }
+                //   else{
+                //       alredyLiked("fa-solid fa-heart red");
+                //       nonLiked("far fa-heart");
+                //   }
+
+                //   if(res.data.liked){
+                //       setLikeStyle("fa-solid fa-heart red")
+                //   }
+                //   else{
+                //     setLikeStyle("far fa-heart")
+                //   }
 
                 }else{
                     console.log(res.data.msg);
@@ -124,9 +132,11 @@ const Post = ({ postData, currentActiveUser }) =>{
                                 <Link to="/" onClick={() => {handleLike(currentActiveUser._id, postData._id)}}>
                                     {
                                         postData.likes.includes(currentActiveUser._id) ?
-                                        <i className="fa-solid fa-heart red"></i>
+                                        <i className={`${alredyLiked}`} onClick={alredyLiked === "fa-solid fa-heart red" ? () =>setAlreadyLiked("far fa-heart") :
+                                                                                                                           () =>setAlreadyLiked("fa-solid fa-heart red")} ></i>
                                         :
-                                        <i className="far fa-heart"></i>
+                                        <i className={`${nonLiked}`} onClick={nonLiked === "far fa-heart" ? () =>setNonLiked("fa-solid fa-heart red") :
+                                        () =>setNonLiked("far fa-heart")}></i>
                                     }
                                 </Link>
 

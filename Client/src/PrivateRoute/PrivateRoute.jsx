@@ -12,8 +12,6 @@ const PrivateRoute = () =>{
     useEffect(()=>{
         const token = Cookies.get("jwt");
         if(token){
-            console.log("Insert into the token block" + token)
-
            axios.post("http://localhost:8000/check_user", {token: Cookies.get("jwt")}).then((res)=>{
  
               if(res.status === 200 && res.data.isAuth){

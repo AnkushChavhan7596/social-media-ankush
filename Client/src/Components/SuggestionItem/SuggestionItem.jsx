@@ -8,6 +8,8 @@ import Cookies from "js-cookie";
 
 const SuggestionItem = ({ user }) =>{
     const [activeUser, setActiveUser] = useState({});
+    const [followTxt, setFollowTxt] = useState("Follow");
+    const [unFollowTxt, setUnfollowTxt] = useState("Unfollow");
     
     ////////////////////////////////////////
     ///////////// handle follow unfollow
@@ -17,6 +19,24 @@ const SuggestionItem = ({ user }) =>{
 
             if(res.status === 200){
                 console.log(res.data.msg);
+
+                if(res.data.follow){
+                   if(followTxt === "Follow"){
+                       setFollowTxt("Unfollow")
+                   }
+                   else{
+                       setFollowTxt("Follow")
+                   }
+                }
+                else{
+                    if(res.data.unfollow){
+                        if(unFollowTxt === "Unfollow"){
+                            setUnfollowTxt("Follow");
+                        }else{
+                            setUnfollowTxt("Unfollow");
+                        }
+                    }
+                }
             }
             else{
                 if(res.data.followedYourSelf){
@@ -74,7 +94,7 @@ const SuggestionItem = ({ user }) =>{
               </div>
              
               <div className="follow_btn">
-                  <button onClick={() =>{handleFollowUnfollow(user._id)} }>{ user.followers.includes(activeUser._id) ? "Unfollow" : "Follow"}</button>
+                  <button onClick={() =>{handleFollowUnfollow(user._id)} }>{ user.followers.includes(activeUser._id) ? unFollowTxt : followTxt}</button>
               </div>
           </div>
 
